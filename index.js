@@ -38,6 +38,43 @@ async function run() {
       const result = await dbCollection.insertOne(data);
       console.log(result, "Create a Todo on DataBase");
     });
+    app.get("/todos", async (req, res) => {
+      const query = { status: "create" };
+      const cursor = dbCollection.find(query);
+      const data = await cursor.toArray();
+      res.send(data);
+    });
+    app.get("/todos/pending", async (req, res) => {
+      const query = { status: "pending" };
+      const cursor = dbCollection.find(query);
+      const data = await cursor.toArray();
+      res.send(data);
+    });
+    app.get("/todos/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const cursor = dbCollection.find(query);
+      const data = await cursor.toArray();
+      res.send(data);
+    });
+    app.put("/todos/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const data = req.body;
+      const update = { $set: data };
+      const options = { upsert: true };
+      const result = await dbCollection.updateOne(query, update, options);
+      console.log(data, "todo pending updated");
+    });
+    app.delete("/todos/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await dbCollection.deleteOne(query);
+      if (result.deletedCount === 1) {
+        console.log("Sucessfully deleted ");
+      }
+      res.send(result);
+    });
   } finally {
     //        await client.close()
   }
