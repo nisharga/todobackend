@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 //mondodb_Clint end
 
 app.get("/", (req, res) => {
-  res.send("I Love Express");
+  res.send("I Love Express.");
 });
 
 app.listen(port, () => {
@@ -40,12 +40,19 @@ async function run() {
     });
     app.get("/todos", async (req, res) => {
       const query = { status: "create" };
+      //   status: "create"
       const cursor = dbCollection.find(query);
       const data = await cursor.toArray();
       res.send(data);
     });
     app.get("/todos/pending", async (req, res) => {
       const query = { status: "pending" };
+      const cursor = dbCollection.find(query);
+      const data = await cursor.toArray();
+      res.send(data);
+    });
+    app.get("/todos/completed", async (req, res) => {
+      const query = { status: "completed" };
       const cursor = dbCollection.find(query);
       const data = await cursor.toArray();
       res.send(data);
@@ -65,6 +72,15 @@ async function run() {
       const options = { upsert: true };
       const result = await dbCollection.updateOne(query, update, options);
       console.log(data, "todo pending updated");
+    });
+    app.put("/todos/completed/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const data = req.body;
+      const update = { $set: data };
+      const options = { upsert: true };
+      const result = await dbCollection.updateOne(query, update, options);
+      console.log(data, "complete todo updated");
     });
     app.delete("/todos/delete/:id", async (req, res) => {
       const id = req.params.id;
