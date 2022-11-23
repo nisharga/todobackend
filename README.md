@@ -5,6 +5,7 @@
 <h2>https://mysterious-cove-52822.herokuapp.com/todos/pending</h2>
 <h2>https://mysterious-cove-52822.herokuapp.com/todos/completed</h2>
 
+<h3>Dynamic Api's</h3>
 
 <h2>https://mysterious-cove-52822.herokuapp.com/addtodo</h2>
 <h2>https://mysterious-cove-52822.herokuapp.com/todos/delete/${id}</h2>
